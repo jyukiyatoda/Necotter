@@ -140,10 +140,19 @@ class PostController extends Controller
         $LoginUserId = $LoginUser -> id;
 
         $followListId = $following -> getFollowListId($LoginUserId);
+        if($followListId -> isEmpty() )
+        {
+            abort(404);
+        } 
+
         $followUserPosts = $post -> getFollowUserPosts($followListId);
+        if($followUserPosts -> isEmpty() )
+        {
+            abort(404);
+        }
 
         return view('posts.followUserPosts', [
             'followUserPosts' => $followUserPosts,
-    ]);
+        ]);
     }
 }

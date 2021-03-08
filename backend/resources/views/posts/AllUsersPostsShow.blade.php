@@ -25,20 +25,19 @@
                     <span class="mr-2">
                         投稿日時 {{ $post->created_at->format('Y.m.d') }}
                     </span>
+
+                    @can('view', $post)
                     <a class="card-link" href="{{ route('posts.show', ['post' => $post]) }}">
                     詳細ページ
                     </a>
+                    @endcan
+                    
                     <a class="card-link" href="{{ route('mypage.show', ['id' => $post->user_id]) }}">
                     Mypage
                     </a>
                 </div>
             </div>
             @endforeach
-            <div class="mb-4">
-                <a href="{{ route('posts.create') }}" class="btn btn-primary">
-                    投稿する
-                </a>
-            </div>
 
         @empty($post)
             <div class="card mb-4">

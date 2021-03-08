@@ -10,10 +10,9 @@ use App\Models\Following;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
-##Todo
-#全投稿の詳細ページ推移削除（他ユーザの時）
-#フォローユーザーの投稿詳細ページ推移削除
 
 class PostController extends Controller
 {
@@ -72,10 +71,17 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
+        $response = Gate::inspect('view',$post);
+        
+        if($response->allowed())
+        {
+            return view('posts.show', [
+                'post' => $post,
+            ]);
+        } else {
+            abort(403);
+        }
 
-        return view('posts.show', [
-            'post' => $post,
-        ]);
     }
 
     /**
@@ -87,10 +93,17 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
+        $response = Gate::inspect('view',$post);
+        
+        if($response->allowed())
+        {
+            return view('posts.edit', [
+                'post' => $post,
+            ]);
+        } else {
+            abort(403);
+        }
 
-        return view('posts.edit', [
-            'post' => $post,
-    ]);
     }
 
     /**
